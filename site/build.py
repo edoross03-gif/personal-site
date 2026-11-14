@@ -63,7 +63,8 @@ person = {
         {"@type": "CollegeOrUniversity", "name": "Università Cattolica del Sacro Cuore", "alternateName": "Università Cattolica", "url": "https://www.unicatt.it/"},
     ],
     "knowsAbout": ["Corporate finance", "Financial analysis", "Business intelligence", "Finance automation"],
-    "sameAs": ["https://www.linkedin.com/in/edoardo-rossetti-96586229a", "https://x.com/EddyR0ss"],
+    "sameAs": ["https://www.linkedin.com/in/edoardo-rossetti-96586229a", "https://x.com/EddyR0ss",
+               "https://github.com/edoross03-gif"],
 }
 jsonld = json.dumps(person, ensure_ascii=False, indent=1).replace("</", "<\\/")
 vps_head = f"""<!doctype html>

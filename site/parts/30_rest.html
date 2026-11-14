@@ -42,16 +42,16 @@
         <div class="stack">Google Sheets · Apps Script · n8n · Caddy</div>
       </article>
       <article class="card">
-        <div class="top"><h3>Job Radar</h3><span class="pill build">BUILDING</span></div>
-        <p>The system I'm using to find my next role. It polls the public job boards of 107 companies I chose (Greenhouse, Lever, Ashby, Workday and five more), scores new postings against my profile with an LLM and pings me first. Stage 1 is built, 12 tests passing.</p>
-        <p>Recruiter reading this? Your company may already be on the list.</p>
-        <div class="stack">Python · Postgres 16 · n8n · Gemini</div>
+        <div class="top"><h3>Job Radar</h3><span class="pill run">RUNNING</span></div>
+        <p>The system I'm using to find my next role. Every two hours it polls the public job boards of 117 companies I chose, through 24 adapters (Greenhouse, Lever, Ashby, Workday and twenty more), keeps the early-career roles, scores each one against my profile with an LLM and pings me on Telegram.</p>
+        <p>Recruiter reading this? Your company may already be on the list. <a href="https://github.com/edoross03-gif/jobradar" target="_blank" rel="noopener">The code is on GitHub ↗</a> <span class="rc live">Live</span></p>
+        <div class="stack">Python · Postgres 16 · Docker · Gemini</div>
       </article>
       <article class="card">
         <div class="top"><h3>Portfolio P&amp;L engine</h3><span class="pill build">BUILDING</span></div>
         <p>Rebuilding my investment tracker with Fede, from a Python script into a React + Supabase app: Revolut and Crypto.com parsers, live prices through an edge function, realized vs unrealized P&amp;L.</p>
-        <p>Open problem: staking rewards inflate my BTC average cost. Know the clean treatment? <a href="#challenge">Challenge me</a>.</p>
-        <div class="stack">React (Lovable) · Supabase · Edge Functions</div>
+        <p>Fixed in November: my BTC average cost came out at more than double the real figure. I had blamed staking rewards. The cause was simpler: an exchange is one row with two legs, and the parser dropped the coin received. <a href="https://github.com/edoross03-gif/investment-tracker" target="_blank" rel="noopener">Work in progress on GitHub ↗</a> <span class="rc live">Live</span></p>
+        <div class="stack">Python · React (Lovable) · Supabase · Edge Functions</div>
       </article>
       <article class="card">
         <div class="top"><h3>Catalyst Core</h3><span class="pill run">RUNNING</span></div>
@@ -195,6 +195,7 @@
       <div class="contact">
         <div class="row"><span class="k">Email</span><span class="v" id="emailText">edo.ross03@gmail.com</span><button class="btn" type="button" id="copyEmail">Copy</button></div>
         <div class="row"><span class="k">LinkedIn</span><a class="v" href="https://www.linkedin.com/in/edoardo-rossetti-96586229a" target="_blank" rel="noopener">edoardo-rossetti-96586229a ↗</a></div>
+        <div class="row"><span class="k">GitHub</span><a class="v" href="https://github.com/edoross03-gif" target="_blank" rel="noopener">edoross03-gif ↗</a></div>
         <div class="row"><span class="k">X</span><a class="v" href="https://x.com/EddyR0ss" target="_blank" rel="noopener">@EddyR0ss ↗</a></div>
         <div class="log" id="fixLog"><b style="color:var(--fg)">Challenge log</b><br>No challenges yet. Be the first.</div>
       </div>
@@ -206,8 +207,8 @@
 
 <footer class="site">
   <div class="wrap">
-    <span>Built and hosted by me on RossettiLab. No cookies.</span>
-    <span>v1.3.3 · 14 Nov 2026</span>
+    <span>Built and hosted by me on RossettiLab. No cookies. <a href="https://github.com/edoross03-gif/personal-site" target="_blank" rel="noopener">Source on GitHub ↗</a></span>
+    <span>v1.3.4 · 14 Nov 2026</span>
   </div>
 </footer>
 
