@@ -1,0 +1,235 @@
+
+<section class="block" id="lab">
+  <div class="wrap">
+    <p class="kicker"><span class="tick">LAB</span> RossettiLab</p>
+    <h2>Things I build on my own server</h2>
+    <div class="prose">
+      <p>Everything here runs on one small Hetzner VPS I administer myself: Docker Compose, Caddy, n8n, Postgres, plus a Mission Control page that aggregates traffic across all of it. The status tags are honest. <b>Live</b> means you can use it; <b>Building</b> means it half-works.</p>
+      <p>The Lab is my training ground: I learn tools here on my own time, so the team I work in gets them on day one.</p>
+    </div>
+    <div class="lab">
+      <article class="card wide" id="novahub">
+        <div class="top"><h3>Nova Hub</h3><span class="pill live">LIVE</span></div>
+        <p class="hook">A study site for my Nova MiM group: mock exams, theory, formula sheets, and a library that files itself.</p>
+        <img class="shot" src="{{shot-nova-hub}}" width="1200" height="750" loading="lazy" alt="Nova Hub home page: a cratered moon in the NOVA wordmark and a countdown to the next exam">
+        <p>It started as an Investments mock exam I built for the midterm. Now it is one site with a lab per course. Statistical Analysis got 9 Moodle mocks rebuilt with verified answer keys and worked solutions, a 70-question quiz bank and an 11-chapter theory reader. <span class="rc" title="The live site, 29 Oct 2026">Site</span></p>
+        <p>The Library lets anyone in the group upload a file: an n8n job renames it, sorts it by course, week and type, and files it in Google Drive. Personal documents and duplicates are held back for me to check. It holds 74 documents across 6 courses. <span class="rc" title="Library catalogue, 29 Oct 2026">catalogue.json</span></p>
+        <p>Fixed in October: every Moodle printout carries "moodle@NovaSBE" in its name, and the filer read that as Statistics. Course words now only count when nobody picked a course, and old files re-file themselves when a rule changes: 10 of 74 moved on the first run. <span class="rc" title="Library catalogue, 29 Oct 2026">catalogue.json</span></p>
+        <p class="small muted">Made for my study group, so there is no public link. It carries course material, so search engines are kept out. Everyone in the group should only use material they're allowed to share, and check the course rules before using AI for graded work. Designed and run by me, built with Claude.</p>
+        <div class="stack">Vanilla JS · n8n · Google Drive API · Caddy · Playwright · Hetzner</div>
+      </article>
+      <article class="card" id="coursebrain">
+        <div class="top"><h3>Course brain</h3><span class="pill build">BUILDING</span></div>
+        <p class="hook">Course labs that write themselves from the Library while the course runs.</p>
+        <img class="shot" src="{{shot-strategy-lab}}" width="900" height="418" loading="lazy" alt="Strategy course lab, first draft: exam countdown, the course pitch and cards for theory, keyword sheet, toolkit and quizzes">
+        <p>One engine renders any course from a single content file: theory chapters, a formula or keyword sheet, an exam toolkit and practice quizzes, each answer linked to the slide it came from.</p>
+        <p>The first lab is Strategy: 10 chapters, 64 practice questions, and a keyword sheet that prints on exactly two A4 pages, the cheat sheet the exam allows. <span class="rc" title="Printed from the browser, 29 Oct 2026">Print test</span></p>
+        <p>Next: a Sunday job that checks whether every slide of the week is in the Library, then drafts additions for me to approve. It never publishes answers to graded work before the deadline.</p>
+        <div class="stack">Python · Claude API · n8n · JSON · Playwright</div>
+      </article>
+      <article class="card wide" id="balderdash">
+        <div class="top"><img class="logo" src="{{logo-balderdash}}" alt="Balderdash logo"><span class="pill live">LIVE</span></div>
+        <h3>Balderdash</h3>
+        <p>Lyric videos for a whole roster, made in production instead of in editing. Upload a track; the engine transcribes it, syncs the lyrics word by word and renders vertical 9:16 videos with mood-matched visuals, ready for TikTok, Reels and Shorts. Built for labels, managers and distributors.</p>
+        <p>Built with Alex Bonzano. I'll call myself founder once the first invoices clear.</p>
+        <p><a href="https://balderdash.it/?ref=eddy" target="_blank" rel="noopener">balderdash.it ↗</a> <span class="rc live">Live</span></p>
+        <div class="stack">Python · Flask · Supabase · n8n · FFmpeg · Hetzner</div>
+      </article>
+      <article class="card">
+        <div class="top"><h3>The Ledger</h3><span class="pill live">LIVE</span></div>
+        <p>My habit tracker, turned into a dataset. A sheet in, a nightly n8n job at 23:55, a JSON out, a static dashboard on top. Untracked days are flagged and excluded, never zero-filled.</p>
+        <p><a href="#ledger">Public slice below ↓</a></p>
+        <div class="stack">Google Sheets · Apps Script · n8n · Caddy</div>
+      </article>
+      <article class="card">
+        <div class="top"><h3>Job Radar</h3><span class="pill build">BUILDING</span></div>
+        <p>The system I'm using to find my next role. It polls the public job boards of 107 companies I chose (Greenhouse, Lever, Ashby, Workday and five more), scores new postings against my profile with an LLM and pings me first. Stage 1 is built, 12 tests passing.</p>
+        <p>Recruiter reading this? Your company may already be on the list.</p>
+        <div class="stack">Python · Postgres 16 · n8n · Gemini</div>
+      </article>
+      <article class="card">
+        <div class="top"><h3>Portfolio P&amp;L engine</h3><span class="pill build">BUILDING</span></div>
+        <p>Rebuilding my investment tracker with Fede, from a Python script into a React + Supabase app: Revolut and Crypto.com parsers, live prices through an edge function, realized vs unrealized P&amp;L.</p>
+        <p>Open problem: staking rewards inflate my BTC average cost. Know the clean treatment? <a href="#challenge">Challenge me</a>.</p>
+        <div class="stack">React (Lovable) · Supabase · Edge Functions</div>
+      </article>
+      <article class="card">
+        <div class="top"><h3>Catalyst Core</h3><span class="pill run">RUNNING</span></div>
+        <p>An n8n and Gemini workflow that writes me an executive briefing every morning: markets, crypto, the FT, and my own task list.</p>
+        <div class="stack">n8n · Gemini · VPS</div>
+      </article>
+      <article class="card">
+        <div class="top"><h3>Revolut reconciliation</h3><span class="pill tool">TOOL</span></div>
+        <p>A Python pipeline that pairs transfers, categorises spending with a 16-rule regex engine and outputs a pivot-ready workbook. Version 1.2 fixed a greedy-pairing bug that was deleting real transfers.</p>
+        <div class="stack">Python · pandas · Colab</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="ledger">
+  <div class="wrap">
+    <p class="kicker"><span class="tick">LDGR</span> Personal dataset</p>
+    <h2>Today vs yesterday, in numbers</h2>
+    <div class="prose">
+      <p>Every night a workflow closes my day: habits in, one normalized score from 0 to 100 out. This is the public slice. Health metrics stay private; everything else is here, bad weeks included.</p>
+      <p class="small muted">On 22 September I started tracking more: wake-up, bedtime, deep work, English share, erg times. They feed my private score. The public line keeps the same core habits it has scored since March, so September compares like for like with Milan.</p>
+    </div>
+    <div class="ledger-grid">
+      <figure class="fig">
+        <div id="chartLedger"></div>
+        <div class="today" id="ledgerToday"></div>
+        <figcaption>Daily score (thin) and 7-day average (cyan). The shaded gap is holidays and the move to Lisbon: not tracked, excluded from every average.</figcaption>
+      </figure>
+      <div class="fig">
+        <div class="tbl">
+          <table class="cmp num">
+            <thead><tr><th>Block</th><th class="r">Milan</th><th class="r">Lisbon</th><th class="r">Δ</th></tr></thead>
+            <tbody id="ledgerCmp"></tbody>
+          </table>
+        </div>
+        <p class="small muted" style="margin:12px 0 0">Lisbon is ahead on the score, even under a stricter rule: from September only a full, focused university day counts as focus. Training is the real gap, and it is on me.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="education">
+  <div class="wrap">
+    <p class="kicker"><span class="tick">EDU</span> Education</p>
+    <h2>Three schools, three countries</h2>
+    <div class="edu">
+      <div class="list">
+        <div class="item has-logo">
+          <a class="logolink" href="https://www.novasbe.unl.pt/en/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img class="edulogo" style="filter:invert(1)" src="{{img-edu-nova}}" alt="Nova SBE logo" width="160" height="160"></a><div><div class="title" style="display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline"><h3>Nova School of Business and Economics</h3><span class="meta">Lisbon · 2026 – 2028 · <a class="ext" href="https://www.novasbe.unl.pt/en/" target="_blank" rel="noopener">novasbe.unl.pt ↗</a></span></div>
+          <p><b>MSc in Management (MiM).</b> Ranked #2 in the Financial Times Masters in Management ranking 2026. This semester: Advanced Financial Management, Investments and Strategy (where my group is building a 2027–2031 strategy for Aena) run all semester; Financial Statement Analysis and Human Resource Management started in trimester 2; Statistical Analysis finished in October, final 17/20. <span class="rc" title="Statistical Analysis final, 20 Oct 2026">Grade</span> I build the group's study site as I go (see <a href="#novahub">Lab → Nova Hub</a>).</p></div>
+        </div>
+        <div class="item has-logo">
+          <a class="logolink" href="https://www.unicatt.it/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img class="edulogo" src="{{img-edu-cattolica}}" alt="Università Cattolica seal" width="160" height="160"></a><div><div class="title" style="display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline"><h3>Università Cattolica del Sacro Cuore</h3><span class="meta">Milan · 2022 – 2025 · <a class="ext" href="https://www.unicatt.it/" target="_blank" rel="noopener">unicatt.it ↗</a></span></div>
+          <p><b>BSc in Business and Market Economics.</b> Thesis: <i>Startup and innovation in the music industry: the AB Vision case</i>. I wrote the business plan of the company whose finance I was running. <a href="#abvision">See the case</a>.</p></div>
+        </div>
+        <div class="item has-logo">
+          <a class="logolink" href="https://splhs.org/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img class="edulogo" src="{{img-edu-stpaul}}" alt="Saint Paul Lutheran High School seal" width="160" height="160"></a><div><div class="title" style="display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline"><h3>Saint Paul Lutheran High School</h3><span class="meta">USA · 2020 – 2021 · <a class="ext" href="https://splhs.org/" target="_blank" rel="noopener">splhs.org ↗</a></span></div>
+          <p><b>Exchange year.</b> Met the requirements for the American high-school diploma. Varsity wrestling and varsity cross country.</p></div>
+        </div>
+        <div class="item">
+          <h4>Languages</h4>
+          <p>Italian, native · English, C1 <a class="certlink" id="ielts" href="#ielts" aria-haspopup="dialog" data-umami-event="ielts-open">IELTS Academic 7.0 <span class="rc">View</span></a> · Spanish, B1+</p>
+          <h4 style="margin-top:14px">Certifications</h4>
+          <p>Bloomberg Market Concepts, 2025 · HarvardX Data Science: R Basics, 2026</p>
+          <h4 style="margin-top:14px">Stack</h4>
+          <div class="chips"><span class="chip">Python · pandas</span><span class="chip">SQL</span><span class="chip">SAP S/4HANA</span><span class="chip">Power BI</span><span class="chip">Excel · VBA · Power Query</span><span class="chip">Google Sheets · Apps Script</span><span class="chip">n8n</span><span class="chip">Supabase · Postgres</span><span class="chip">Docker · Caddy</span><span class="chip">R</span></div>
+        </div>
+      </div>
+      <figure>
+        <img src="{{img-campus}}" alt="The NOVA letters in the atrium of the Nova SBE campus in Carcavelos">
+        <figcaption>Carcavelos campus, first day of classes, Aug 2026.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="beyond">
+  <div class="wrap">
+    <p class="kicker"><span class="tick">EXTRA</span> Beyond the CV</p>
+    <h2>The part LinkedIn has no field for</h2>
+    <div class="beyond">
+      <div class="card">
+        <h4>Origin story</h4>
+        <p>I've been obsessed with tech and innovation since I was a child. In middle school I was running Kali Linux and learning the basics of penetration testing: how systems break, before I learned how they're built. As a teenager I traded whatever had a market: collectible cards, then fashion, then crypto.</p>
+        <p class="muted small">This is the short version. Ask me for the long one.</p>
+      </div>
+      <div class="card">
+        <div class="clubhead"><a class="logolink" href="https://canottierimilano.it/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="{{img-club-canottieri}}" alt="Canottieri Milano logo" width="160" height="160"></a><div><h4>Rowing</h4><a class="ext" href="https://canottierimilano.it/" target="_blank" rel="noopener">canottierimilano.it ↗</a></div></div>
+        <p><b>Canottieri Milano, 16 to 18.</b> One of Italy's oldest and most traditional rowing clubs, founded in 1890. Three tough sessions a week and a youth programme built on discipline. Rowing on the Naviglio is its own challenge: a narrow city canal where official races are rare because of its technical constraints. I won my first official one there.</p>
+        <p>Now the Nova Rowing Club: an ocean row on weekend mornings, 2k tests on the erg, three gym sessions a week.</p>
+      </div>
+      <div class="card">
+        <div class="clubhead"><a class="logolink" href="https://novaskillsassociation.com/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="{{img-club-nsa}}" alt="Nova Skills Association logo" width="160" height="160"></a><div><h4>Nova Skills Association</h4><a class="ext" href="https://novaskillsassociation.com/" target="_blank" rel="noopener">novaskillsassociation.com ↗</a></div></div>
+        <p>I'm on the operations team of NSA, the student club that runs soft-skills workshops at Nova. Student-club plans move fast: the two talks I was co-organising (marketing, academic writing) were dropped in October. What I'm working on now:</p>
+        <ol class="events">
+          <li><b>Sales &amp; Skills</b>, with the Nova Sales Club: an evening on salary negotiation, the conversation nobody wants to start. The title is still being voted on. My part is the coffee break: I shortlisted 7 Nova alumni at a coffee company <span class="rc" title="Alumni search, 20 Oct 2026: 7 profiles">LinkedIn</span>, one of them pointed me to the company's sponsorship desk, and the request goes through their form, which wants a month's notice. <span class="rc" title="The sponsor's request form: at least one month before the event">Sponsor form</span></li>
+          <li><b>The Field Lab workshop deck</b>: the teamwork session NSA runs for students starting their Field Lab projects with companies (22 Oct, online). I rebuilt the 24-slide deck in NSA branding, in three styles, with speaker notes for running it online. <span class="rc" title="Restyled deck, 21 Oct 2026: 24 slides, 3 styles, PPTX + PDF">Deck</span> Fixed on the way: a font fallback that doubled words in presentation mode ("week week"). Calibri everywhere now.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h4>Reading</h4>
+        <ul class="books">
+          <li><em class="bk now">Now</em> The Power of Geography <span>· Tim Marshall</span></li>
+          <li><em class="bk">Next</em> The Trading Game <span>· Gary Stevenson</span></li>
+          <li><em class="bk">Next</em> Chip War <span>· Chris Miller</span></li>
+          <li><em class="bk done">Done</em> The Art of War <span>· Sun Tzu</span></li>
+        </ul>
+        <div class="readbar" id="readbar" aria-label="What I read, by share"></div>
+        <div class="readkey" id="readkey"></div>
+        <p class="small" style="margin-top:10px;color:#cbd8ea">Every time I finish a book, I prepare a deliverable with its best lessons, so I can apply them in the real world.</p>
+      </div>
+    </div>
+    <div class="chips" style="margin-top:22px" aria-label="Interests">
+      <span class="chip">Geopolitics</span><span class="chip">Bitcoin and crypto markets</span><span class="chip">Quantum risk</span><span class="chip">Portfolio construction</span><span class="chip">Collector cars</span><span class="chip">Italian rap</span><span class="chip">Habits, measured</span>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="challenge">
+  <div class="wrap">
+    <p class="kicker"><span class="tick">FIX</span> Challenges welcome</p>
+    <h2>Challenge me</h2>
+    <div class="prose">
+      <p class="lede">If you've read this far, you're exactly who I built this for. Spotted a wrong number, an outdated date or a weak argument? Challenge it. If it holds up, it goes into the log below, with your name if you want it there.</p>
+    </div>
+    <div class="correct">
+      <form id="fixForm" novalidate>
+        <label for="fix-section">Section</label>
+        <select id="fix-section" name="section">
+          <option>Kolme</option><option>AB Vision case study</option><option>SANGI</option><option>Lab projects</option><option>The Ledger</option><option>Education</option><option>Beyond the CV</option><option>Something else</option>
+        </select>
+        <label for="fix-text">What you'd challenge, and why</label>
+        <textarea id="fix-text" name="text" required placeholder="The linear program ignores cost to serve, so..."></textarea>
+        <label for="fix-who">Your name or email (optional, for credit)</label>
+        <input id="fix-who" name="who" autocomplete="email" placeholder="Name or email">
+        <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="fix-hp">Website</label><input id="fix-hp" name="website" tabindex="-1" autocomplete="off"></div>
+        <div class="btns" style="margin-top:4px"><button class="btn primary" type="submit">Send challenge</button></div>
+        <p class="formmsg" id="fixMsg" role="status"></p>
+      </form>
+      <div class="contact">
+        <div class="row"><span class="k">Email</span><span class="v" id="emailText">edo.ross03@gmail.com</span><button class="btn" type="button" id="copyEmail">Copy</button></div>
+        <div class="row"><span class="k">LinkedIn</span><a class="v" href="https://www.linkedin.com/in/edoardo-rossetti-96586229a" target="_blank" rel="noopener">edoardo-rossetti-96586229a ↗</a></div>
+        <div class="row"><span class="k">X</span><a class="v" href="https://x.com/EddyR0ss" target="_blank" rel="noopener">@EddyR0ss ↗</a></div>
+        <div class="log" id="fixLog"><b style="color:var(--fg)">Challenge log</b><br>No challenges yet. Be the first.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- /story -->
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Built and hosted by me on RossettiLab. No cookies.</span>
+    <span>v1.3.3 · 14 Nov 2026</span>
+  </div>
+</footer>
+
+<dialog class="certdlg" id="ieltsDlg" aria-labelledby="ieltsTitle">
+  <div class="hd">
+    <h3 id="ieltsTitle">IELTS Academic · Test Report Form</h3>
+    <button class="x" type="button" data-close aria-label="Close">×</button>
+  </div>
+  <div class="bd">
+    <ul class="bands" aria-label="Band scores">
+      <li><b>8.0</b><span>Listening</span></li>
+      <li><b>8.0</b><span>Reading</span></li>
+      <li><b>6.5</b><span>Writing</span></li>
+      <li><b>6.0</b><span>Speaking</span></li>
+      <li class="ov"><b>7.0</b><span>Overall</span></li>
+      <li class="ov"><b>C1</b><span>CEFR</span></li>
+    </ul>
+    <img class="doc" data-src="/ielts/ielts-trf.webp" alt="IELTS Academic Test Report Form for Edoardo Rossetti, 11 November 2025: Listening 8.0, Reading 8.0, Writing 6.5, Speaking 6.0, overall band 7.0, CEFR C1" width="1654" height="2339">
+    <p class="meta">IELTS Online · test date 11 Nov 2025 · issued 16 Nov 2025 · TRF no. 2520015061ROSE1IHA<br>Passport number and date of birth hidden. Organisations can verify the result at <a href="https://ielts.org/verify" target="_blank" rel="noopener">ielts.org/verify</a> with the TRF number.</p>
+    <div class="btns">
+      <a class="btn primary" href="/ielts/IELTS_Academic_TRF_Edoardo_Rossetti.pdf" target="_blank" rel="noopener" data-umami-event="ielts-pdf">Open PDF ↗</a>
+      <button class="btn" type="button" data-close>Close</button>
+    </div>
+  </div>
+</dialog>

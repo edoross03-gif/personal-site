@@ -1,0 +1,13 @@
+site/dist/
+site/out/
+__pycache__/
+.venv/
+*.bak*
+.DS_Store
+desktop.ini
+_archive/
+
+# Local only: deploy target, internal deploy notes (server config, n8n steps, briefs)
+.deploy.env
+docs/*
+!docs/screenshot.png

@@ -1,0 +1,149 @@
+
+<section class="block" id="abvision">
+  <div class="wrap">
+    <p class="kicker"><span class="tick">ABV</span> Case study · Sep 2024 – Mar 2026</p>
+    <h2>Building a finance function for a music startup, then stepping back.</h2>
+    <div class="prose">
+      <p class="lede">Have you ever tried to forecast cash for a company whose clients are emerging rap artists? One line of the operating manual I wrote says it plainly: artists have a low credit score, so forecast incoming cash prudently.</p>
+      <p>This is what I built at AB Vision, in the order I built it, with the numbers from the files. Client names, prices, salaries and euro balances stay out. Ratios, models and methods are in.</p>
+    </div>
+
+    <div class="facts">
+      <div><h4>What it is</h4><p>Release planning, social strategy, paid media and sound direction for emerging urban artists, sold as monthly retainers in three tiers. Still running: <a href="https://abvision.it/?ref=eddy" target="_blank" rel="noopener">abvision.it</a> <span class="rc live">Live</span></p></div>
+      <div><h4>Where</h4><p>A Milan studio space shared with an independent label and a recording-studio group.</p></div>
+      <div><h4>Who</h4><p>Three partners and four operators, plus rotating juniors. Founder and CEO: Alexander Bonzano.</p></div>
+      <div><h4>Scale</h4><p>About 20 artists on quarterly contracts when the business plan was written, Oct 2025. <span class="rc">Thesis</span></p></div>
+      <div><h4>My seat</h4><p>Assistant project manager from Sep 2024, then financial controller and board member until March 2026. We also built the website together.</p></div>
+      <div><h4>Board minutes</h4><p class="mono small">“Eddy: business plan, accounting and administration.”</p></div>
+    </div>
+
+    <div class="sys">
+      <!-- 1 -->
+      <div class="sysitem">
+        <div class="txt">
+          <div class="n">SYSTEM 1 · CASH</div>
+          <h3>A pipeline tracker and a cash calendar, two views of the same film</h3>
+          <p>Revenue arrived as quotes and renewals negotiated over WhatsApp. Nobody could say what cash would land, or when.</p>
+          <p><b>FPS</b> logs every quote, renewal, draft and potential deal: issue date, due date, days late, notified, replied, next action. An Apps Script pulls every open deal into one list. <b>FDC</b> is a day-by-day cash calendar: confirmed movements in black, forecasts in yellow, moved to actuals within 24 hours of payment.</p>
+          <p>The routine around it: sheet updates every working day, a one-hour call with the CEO on Monday, Wednesday and Friday, a written recap on Tuesday and Thursday, and a monthly outlook at the start of each month.</p>
+          <p class="finding"><b>Result.</b> Payment delays, inbound and outbound, down by about 30%. <span class="rc">CV</span></p>
+        </div>
+        <figure class="fig">
+          <div class="flow" aria-label="Cash system flow">
+            <div class="row">
+              <div class="node"><b>Input</b><span>Quote, renewal or draft sent to an artist</span></div>
+              <div class="node"><b>Input</b><span>Payables: rent, ads, payroll, suppliers</span></div>
+            </div>
+            <div class="arrow">↓</div>
+            <div class="node"><b>FPS · pipeline</b><span>Status, days late, notified, replied, next action. Open deals auto-listed.</span></div>
+            <div class="arrow">↓</div>
+            <div class="node"><b>FDC · cash calendar</b><span>Daily inflows and outflows. Yellow means forecast, black means real.</span></div>
+            <div class="arrow">↓</div>
+            <div class="row">
+              <div class="node"><b>Mon · Wed · Fri</b><span>Call with the CEO on priorities and payments</span></div>
+              <div class="node"><b>Tue · Thu</b><span>Written recap: closing, renewals, cash</span></div>
+            </div>
+            <div class="arrow">↓</div>
+            <div class="node"><b>Board</b><span>Monthly outlook and forecasts</span></div>
+          </div>
+          <figcaption>Operating manual, Dec 2025. Rule 6: if a client doesn't answer, wait 24h before following up. Rule 8: never contact clients on Sunday.</figcaption>
+        </figure>
+      </div>
+
+      <!-- 2 -->
+      <div class="sysitem">
+        <div class="txt">
+          <div class="n">SYSTEM 2 · UNIT ECONOMICS</div>
+          <h3>What each client tier really cost to serve</h3>
+          <p>I priced every service line by the hour: rent and running costs plus team pay, spread over the hours actually available. Then I multiplied by the hours each tier consumes per month across media buying, social strategy, sound direction, consulting and project management.</p>
+          <p>Cost to serve ate between 64% and 71% of list price, depending on the tier. Mid-tier clients were the most profitable; top-tier clients, the ones everyone wanted, were not. <span class="rc" title="Margin model, Oct 2025">Model</span></p>
+          <p class="finding"><b>Finding.</b> The top tier had the thinnest margin of all in the month a deal closed: 10.9% once the closer's commission was paid. A repricing scenario of +20–25% lifted closing-month margin to 25–30% on every tier.</p>
+        </div>
+        <figure class="fig">
+          <div id="chartUnit"></div>
+          <figcaption>Margin by tier at list price. Base: before sales commission. Renewal and closing: after the recurring and the closing commission. Model, Oct 2025.</figcaption>
+        </figure>
+      </div>
+
+      <!-- 3 -->
+      <div class="sysitem">
+        <div class="txt">
+          <div class="n">SYSTEM 3 · CAPACITY</div>
+          <h3>The hour budget: where the team was full and where it was idle</h3>
+          <p>Each service line had an owner and a monthly hour cap. I enumerated every possible roster mix, written like 22-5-2 for entry-mid-top, computed idle capacity per line and intersected the feasible sets across lines, so the answer to “can we take this artist?” became a lookup.</p>
+          <p class="finding"><b>Finding.</b> In the November 2025 plan the team was booked for about 297 of 560 available hours, yet sound direction sat at 100% while influencer marketing and magazine placement sat under 5%. The constraint was one bottleneck, not headcount.</p>
+        </div>
+        <figure class="fig">
+          <div id="chartCap"></div>
+          <figcaption>Planned hours per service line vs an 80-hour monthly cap, November 2025. <span class="rc">Model</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 4 -->
+      <div class="sysitem">
+        <div class="txt">
+          <div class="n">SYSTEM 4 · ROSTER MIX</div>
+          <h3>Same team, different mix: +22%</h3>
+          <p>With hours per tier as constraints and monthly fee as the objective, I solved the roster as a small linear program. Moving from 10 entry, 10 mid and 5 top clients to 30, 5 and 5 raised monthly contribution by 22% under the same caps. Media buying, social strategy and visual direction all ended exactly at their limits.</p>
+          <p>The model used list price, not margin. The October cost-to-serve work above is what corrected it, and why entry-tier volume only holds up with repricing.</p>
+        </div>
+        <figure class="fig">
+          <div id="chartLP"></div>
+          <div class="tbl" style="margin-top:12px">
+            <table class="num">
+              <thead><tr><th>Hours per month</th><th class="r">Cap</th><th class="r">10-10-5</th><th class="r">30-5-5</th></tr></thead>
+              <tbody>
+                <tr><td>Media buying</td><td class="r">60</td><td class="r">50</td><td class="r">60</td></tr>
+                <tr><td>Social strategy</td><td class="r">160</td><td class="r">130</td><td class="r">160</td></tr>
+                <tr><td>Visual direction</td><td class="r">50</td><td class="r">40</td><td class="r">50</td></tr>
+                <tr><td>Project management</td><td class="r">100</td><td class="r">40</td><td class="r">50</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <figcaption>Monthly contribution indexed, 10-10-5 = 100. Roster optimisation study, May 2025, recomputed by hand for this page. <span class="rc">Model</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- 5 -->
+      <div class="sysitem">
+        <div class="txt">
+          <div class="n">SYSTEM 5 · PLAN, BOARD, PEOPLE</div>
+          <h3>A business plan that became my thesis, and a hiring machine</h3>
+          <p>The business plan: Italian recorded-music market from FIMI data, Porter's five forces, a market of about 30,000 emerging artists narrowing to 5,000–8,000 who buy professional services and 250 reachable in three years; a quarterly cohort model for churn, retention and acquisition; a 15-month P&amp;L, a five-year projection, and a microcredit with a seven-year amortisation schedule to fund growth without dilution. <span class="rc">Thesis</span></p>
+          <p>On the people side: job specs for four roles, about 100 applications screened across three pipelines, a 72-hour work-sample test (“organise the CEO's Monday”) scored on a weighted rubric, and the operating manual for my own successor in accounting.</p>
+        </div>
+        <figure class="fig">
+          <div class="tbl">
+            <table>
+              <thead><tr><th>Work-sample rubric</th><th class="r">Weight</th></tr></thead>
+              <tbody>
+                <tr><td>Organisation: clear agenda, no overlaps</td><td class="r">25%</td></tr>
+                <tr><td>Problem solving: conflicts, uncertain contacts</td><td class="r">25%</td></tr>
+                <tr><td>Communication: three confirmation emails</td><td class="r">20%</td></tr>
+                <tr><td>Attention to detail</td><td class="r">15%</td></tr>
+                <tr><td>Practicality: usable without questions</td><td class="r">15%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <figcaption>Setter trial task, autumn 2025. The manual splits the accountant's day 60% ledger work, 40% admin and analysis.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div style="margin-top:clamp(48px,7vw,80px)">
+      <p class="kicker"><span class="tick">END</span> Why I stepped back</p>
+      <h3 style="font-size:clamp(1.4rem,2.6vw,1.9rem)">AB Vision is still running. I chose to step out of it.</h3>
+      <div class="pvr">
+        <div><p class="plan"><b>What happened</b></p><p>From January 2026 I was running AB Vision's finance alongside a full-time internship at Kolme. Both deserved full attention, and I couldn't give it to both.</p></div>
+        <div><p class="plan"><b>The honest part</b></p><p>I had to choose. Kolme was where I was learning the most, and I'd started building toward a different path: corporate finance, automation, and a master's abroad. A finance function needs someone fully committed to it every day, and that was no longer me. So in March 2026 I stepped back.</p></div>
+        <div><p class="plan"><b>What stayed</b></p><p>The company, the website we built together, and the systems above. I wrote an operating manual so whoever took over accounting wouldn't start from zero.</p></div>
+      </div>
+      <ol class="lessons">
+        <li><strong>Choose, then commit.</strong><p>Two roles that each needed full attention were getting half of mine. Choosing, and stepping back cleanly with a manual for my successor, beat fading out of both.</p></li>
+        <li><strong>Cultural fit of the context matters as much as the content.</strong><p>We ran a process-driven company inside the Italian urban music scene. The processes worked; getting a market that runs on WhatsApp and gut feel to follow them was the hard part.</p></li>
+        <li><strong>Cash is a calendar, not a balance.</strong><p>Forecast by day, assume clients pay late, and tell suppliers early when a payment will slip.</p></li>
+      </ol>
+      <p class="prose small muted" style="margin-top:18px">Alex and I still build together. Balderdash, in the Lab below, came out of those years.</p>
+    </div>
+  </div>
+</section>

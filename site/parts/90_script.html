@@ -1,0 +1,335 @@
+
+<script>
+(function(){
+"use strict";
+var LEDGER = {{LEDGER}};
+var CFG = window.ER_CONFIG || {};
+var NS = "http://www.w3.org/2000/svg";
+var css = getComputedStyle(document.documentElement);
+function v(n){ return css.getPropertyValue(n).trim(); }
+function el(tag, attrs, parent, text){
+  var e = document.createElementNS(NS, tag);
+  for (var k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function svg(w, h, label){
+  var s = el("svg", {viewBox:"0 0 "+w+" "+h, role:"img", "aria-label":label});
+  s.style.fontFamily = v("--f-mono"); s.style.fontSize = "13px";
+  return s;
+}
+var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+function cw(b){ return Math.max(300, Math.round(b.clientWidth || 560)); }
+function fmtDate(s){ var d = new Date(s+"T00:00:00"); return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }
+
+/* ---------- hero candles ---------- */
+function drawHero(animate){
+  var c = document.getElementById("heroChart"); if(!c) return;
+  var r = c.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio||1, 2);
+  c.width = r.width*dpr; c.height = r.height*dpr;
+  var g = c.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0);
+  var W = r.width, H = r.height, cd = LEDGER.candles, n = cd.length;
+  var x0 = W*(W<760?0.04:0.46), x1 = W-10, y0 = H*(W<760?0.52:0.36), y1 = H-6;
+  var min = 0, max = 100;
+  function X(i){ return x0 + (i+0.5)*(x1-x0)/n; }
+  function Y(val){ return y1 - (val-min)/(max-min)*(y1-y0); }
+  var bw = Math.max(2, (x1-x0)/n*0.34), t0 = performance.now();
+  function frame(now){
+    var p = (reduce || !animate) ? 1 : Math.min(1, (now-t0)/1400), shown = Math.ceil(p*n);
+    g.clearRect(0,0,W,H); g.globalAlpha = 0.32;
+    // area under the close line
+    var grad = g.createLinearGradient(0,y0,0,y1);
+    grad.addColorStop(0,"rgba(56,189,248,0.16)"); grad.addColorStop(1,"rgba(56,189,248,0)");
+    g.beginPath();
+    for (var i=0;i<shown;i++){ var yy=Y(cd[i][4]); if(i===0) g.moveTo(X(i),yy); else g.lineTo(X(i),yy); }
+    if (shown>1){ g.lineTo(X(shown-1),y1); g.lineTo(X(0),y1); g.closePath(); g.fillStyle=grad; g.fill(); }
+    for (var j=0;j<shown;j++){
+      var o=cd[j][1], hi=cd[j][2], lo=cd[j][3], cl=cd[j][4], up=cl>=o, x=X(j);
+      g.strokeStyle = up ? "rgba(56,189,248,0.55)" : "rgba(140,170,204,0.38)";
+      g.lineWidth = 1;
+      g.beginPath(); g.moveTo(x, Y(hi)); g.lineTo(x, Y(lo)); g.stroke();
+      var top = Y(Math.max(o,cl)), bot = Y(Math.min(o,cl)), hgt = Math.max(1.5, bot-top);
+      if (up){ g.fillStyle="rgba(56,189,248,0.42)"; g.fillRect(x-bw/2, top, bw, hgt); }
+      else { g.fillStyle="rgba(21,58,116,0.9)"; g.fillRect(x-bw/2, top, bw, hgt); g.strokeRect(x-bw/2+.5, top+.5, bw-1, hgt-1); }
+    }
+    g.beginPath(); g.strokeStyle="rgba(56,189,248,0.8)"; g.lineWidth=1.6;
+    for (var k=0;k<shown;k++){ var y2=Y(cd[k][4]); if(k===0) g.moveTo(X(k),y2); else g.lineTo(X(k),y2); }
+    g.stroke();
+    if (p<1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- AB Vision: unit economics ---------- */
+function drawUnit(){
+  var box = document.getElementById("chartUnit"); if(!box) return;
+  var tiers = [["Entry",29.4,25.4,14.4,26.2],["Mid",36.5,31.5,19.1,29.7],["Top",30.9,24.9,10.9,24.7]];
+  box.innerHTML=''; var W=cw(box), L=W<420?104:122, R=52, bh=14, gap=3, grp=3*bh+2*gap, gpad=24, T=28;
+  var H = T + tiers.length*(grp+gpad) + 6;
+  var s = svg(W,H,"Margin by client tier: base, renewal month and closing month, with repriced closing margin");
+  var sx = function(p){ return L + p/50*(W-L-R); };
+  (W<420?[0,25,50]:[0,10,20,30,40,50]).forEach(function(t){
+    el("line",{x1:sx(t),x2:sx(t),y1:T-6,y2:H-4,stroke:v("--line"),"stroke-width":1},s);
+    el("text",{x:sx(t),y:T-12,"text-anchor":"middle",fill:v("--fg-3")},s,t+"%");
+  });
+  var cols=[v("--s4"),v("--s3"),v("--accent")], names=["Base","Renewal","Closing"];
+  tiers.forEach(function(t,i){
+    var y = T + i*(grp+gpad);
+    el("text",{x:0,y:y+grp/2+4,fill:v("--fg"),"font-size":"14"},s,t[0]);
+    for (var m=0;m<3;m++){
+      var yy = y + m*(bh+gap);
+      el("rect",{x:L,y:yy,width:sx(t[m+1])-L,height:bh,fill:cols[m],rx:2},s);
+      el("text",{x:sx(t[m+1])+6,y:yy+bh-2.5,fill:m===2?v("--fg"):v("--fg-2")},s,t[m+1].toFixed(1)+"%");
+    }
+    var ry = y + 2*(bh+gap);
+    el("line",{x1:sx(t[4]),x2:sx(t[4]),y1:ry-3,y2:ry+bh+3,stroke:v("--warn"),"stroke-width":2,"stroke-dasharray":"3 2"},s);
+  });
+  box.appendChild(s);
+  var key = document.createElement("div"); key.className="readkey"; key.style.marginTop="8px";
+  key.innerHTML = names.map(function(n,i){return '<span><i style="background:'+cols[i]+'"></i>'+n+'</span>';}).join("") +
+    '<span><i style="background:transparent;border:2px dashed '+v("--warn")+';width:0;height:9px;border-width:0 0 0 2px"></i>Closing, repriced +20–25%</span>';
+  box.appendChild(key);
+}
+
+/* ---------- AB Vision: capacity ---------- */
+function drawCap(){
+  var box = document.getElementById("chartCap"); if(!box) return;
+  var rows=[["Sound direction",80.0,"Sound dir."],["Social strategy",72.86,"Social"],["Project management",56.0,"Project mgmt"],["Strategy consulting",42.86,"Consulting"],["Media buying",39.29,"Media buying"],["Influencer marketing",2.86,"Influencer"],["Magazine placement",2.86,"Magazine"]];
+  box.innerHTML=''; var W=cw(box), L=W<420?112:178, R=48, bh=16, gap=10, T=26, H=T+rows.length*(bh+gap)+4;
+  var s = svg(W,H,"Planned hours per service line against an 80 hour cap, November 2025");
+  var sx=function(h){ return L + h/80*(W-L-R); };
+  (W<420?[0,40,80]:[0,20,40,60,80]).forEach(function(t){
+    el("line",{x1:sx(t),x2:sx(t),y1:T-6,y2:H-4,stroke:v("--line")},s);
+    el("text",{x:sx(t),y:T-12,"text-anchor":"middle",fill:v("--fg-3")},s,t+"h");
+  });
+  rows.forEach(function(r,i){
+    var y=T+i*(bh+gap), full=r[1]>=79.9, idle=r[1]<10;
+    el("text",{x:0,y:y+bh-4,fill:v("--fg"),"font-size":"14"},s,W<420?r[2]:r[0]);
+    el("rect",{x:L,y:y,width:sx(80)-L,height:bh,fill:"rgba(140,170,204,0.08)",rx:2},s);
+    el("rect",{x:L,y:y,width:Math.max(2,sx(r[1])-L),height:bh,fill:full?v("--accent"):(idle?v("--down"):v("--s4")),rx:2},s);
+    el("text",{x:sx(80)+8,y:y+bh-4,fill:full?v("--accent"):(idle?v("--down"):v("--fg-2"))},s,Math.round(r[1]/80*100)+"%");
+  });
+  box.appendChild(s);
+}
+
+/* ---------- AB Vision: LP ---------- */
+function drawLP(){
+  var box = document.getElementById("chartLP"); if(!box) return;
+  var rows=[["10-10-5",[22.2,44.4,33.3]],["30-5-5",[66.7,22.2,33.3]]];
+  box.innerHTML=''; var W=cw(box), L=70, R=W<420?96:120, bh=26, gap=16, T=26, H=T+2*(bh+gap)+22;
+  var s = svg(W,H,"Monthly contribution by roster mix, indexed: 100 versus 122");
+  var sx=function(e){ return L + e/130*(W-L-R); };
+  [0,25,50,75,100,125].forEach(function(t){
+    el("line",{x1:sx(t),x2:sx(t),y1:T-6,y2:T+2*(bh+gap)-gap+4,stroke:v("--line")},s);
+    el("text",{x:sx(t),y:T-12,"text-anchor":"middle",fill:v("--fg-3")},s,String(t));
+  });
+  var cols=[v("--s4"),v("--s3"),v("--accent")];
+  rows.forEach(function(r,i){
+    var y=T+i*(bh+gap), x=L, tot=0;
+    el("text",{x:0,y:y+bh/2+4,fill:v("--fg"),"font-size":"14"},s,r[0]);
+    r[1].forEach(function(e,j){ el("rect",{x:x,y:y,width:sx(tot+e)-sx(tot)-1,height:bh,fill:cols[j]},s); tot+=e; x=sx(tot); });
+    el("text",{x:sx(tot)+8,y:y+bh/2+4,fill:i?v("--accent"):v("--fg-2"),"font-size":"14"},s,Math.round(tot)+(i?"  (+22%)":""));
+  });
+  var ky=T+2*(bh+gap)+8;
+  ["Entry","Mid","Top"].forEach(function(n,j){
+    var kx=L+j*Math.min(120,(W-L)/3);
+    el("rect",{x:kx,y:ky,width:9,height:9,fill:cols[j],rx:1},s);
+    el("text",{x:kx+14,y:ky+8.5,fill:v("--fg-2")},s,n);
+  });
+  box.appendChild(s);
+}
+
+/* ---------- Ledger ---------- */
+function drawLedger(data){
+  var box = document.getElementById("chartLedger"); if(!box) return;
+  box.innerHTML = "";
+  var days = data.days, W=cw(box), H=Math.max(230,Math.round(W*0.42)), L=34, R=50, T=14, B=26;
+  var t0 = new Date(days[0][0]+"T00:00:00").getTime(), t1 = new Date(days[days.length-1][0]+"T00:00:00").getTime();
+  var sx=function(d){ return L + (new Date(d+"T00:00:00").getTime()-t0)/(t1-t0)*(W-L-R); };
+  var sy=function(val){ return T + (100-val)/100*(H-T-B); };
+  var s = svg(W,H,"Daily habit score and 7-day average from "+days[0][0]+" to "+days[days.length-1][0]);
+  if (data.gap){ el("rect",{x:sx(data.gap[0]),y:T,width:sx(data.gap[1])-sx(data.gap[0]),height:H-T-B,fill:"rgba(140,170,204,0.07)"},s);
+    el("text",{x:(sx(data.gap[0])+sx(data.gap[1]))/2,y:T+14,"text-anchor":"middle",fill:v("--fg-3")},s,"not tracked"); }
+  [0,25,50,75,100].forEach(function(t){
+    el("line",{x1:L,x2:W-R,y1:sy(t),y2:sy(t),stroke:v("--line")},s);
+    el("text",{x:L-8,y:sy(t)+4,"text-anchor":"end",fill:v("--fg-3")},s,t);
+  });
+  var y=new Date(days[0][0]).getFullYear();
+  for (var m=new Date(days[0][0]).getMonth()+1; m<=new Date(days[days.length-1][0]).getMonth(); m++){
+    var ds = y+"-"+String(m+1).padStart(2,"0")+"-01";
+    el("line",{x1:sx(ds),x2:sx(ds),y1:H-B,y2:H-B+4,stroke:v("--fg-3")},s);
+    el("text",{x:sx(ds),y:H-8,"text-anchor":"middle",fill:v("--fg-3")},s,["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m]);
+  }
+  function path(idx){
+    var d="", prev=null;
+    days.forEach(function(r){
+      if (r[idx]==null){ prev=null; return; }
+      var brk = prev && (new Date(r[0])-new Date(prev))/864e5 > 3;
+      d += (prev==null||brk?"M":"L") + sx(r[0]).toFixed(1)+","+sy(r[idx]).toFixed(1);
+      prev = r[0];
+    });
+    return d;
+  }
+  el("path",{d:path(1),fill:"none",stroke:v("--fg-3"),"stroke-width":1,"stroke-opacity":.8},s);
+  el("path",{d:path(2),fill:"none",stroke:v("--accent"),"stroke-width":2.2,"stroke-linejoin":"round"},s);
+  var last = days[days.length-1];
+  el("circle",{cx:sx(last[0]),cy:sy(last[2]),r:4,fill:v("--accent")},s);
+  el("text",{x:sx(last[0])+8,y:sy(last[2])+4,fill:v("--accent")},s,last[2].toFixed(1));
+  box.appendChild(s);
+
+  var split = data.split || "2026-08-01";
+  var A = days.filter(function(r){return r[0]<split;}), Bk = days.filter(function(r){return r[0]>=split;});
+  function avg(a,i){ var x=a.filter(function(r){return r[i]!=null;}); return x.reduce(function(s,r){return s+r[i];},0)/x.length; }
+  var rowsDef=[["Days tracked",null,0],["Avg daily score",1,1],["Habit success",3,0,"%"],["Training days",4,0,"%",100],["Reading days",5,0,"%",100],["Focus days",6,0,"%",100]];
+  var tb = document.getElementById("ledgerCmp"); tb.innerHTML="";
+  rowsDef.forEach(function(d){
+    var a,b;
+    if (d[1]==null){ a=A.length; b=Bk.length; }
+    else { var mul=d[4]||1; a=avg(A,d[1])*mul; b=avg(Bk,d[1])*mul; }
+    var dl = b-a, cls = d[1]==null ? "" : (dl>=0?"up":"dn");
+    var f=function(x){ return x.toFixed(d[2])+(d[3]||""); };
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td>"+d[0]+"</td><td class='r'>"+f(a)+"</td><td class='r'><b>"+f(b)+"</b></td><td class='r'>"+(d[1]==null?"":"<span class='delta "+cls+"'>"+(dl>=0?"+":"")+dl.toFixed(1)+(d[3]?" pp":"")+"</span>")+"</td>";
+    tb.appendChild(tr);
+  });
+  var best = days.reduce(function(m,r){ return r[2]>m[2]?r:m; }, days[0]);
+  document.getElementById("ledgerToday").innerHTML =
+    "<span>Last logged <b>"+fmtDate(last[0])+"</b></span><span>Score <b>"+(last[1]!=null?last[1].toFixed(1):"n/a")+"</b></span><span>7-day avg <b>"+last[2].toFixed(1)+"</b></span><span>Best 7-day avg <b>"+best[2].toFixed(1)+"</b> ("+fmtDate(best[0])+")</span>";
+  var k=document.getElementById("kpiDays"); if(k) k.textContent = days.length;
+}
+
+/* ---------- reading mix ---------- */
+function drawReading(){
+  var mix=[["Geopolitics & history",25,"--s1"],["Identity narratives",22,"--s2"],["Pragmatic mindset",20,"--s3"],["Strategy & decisions",18,"--s4"],["Other",15,"--s5"]];
+  var bar=document.getElementById("readbar"), key=document.getElementById("readkey"); if(!bar) return;
+  bar.innerHTML = mix.map(function(m){return '<span style="width:'+m[1]+'%;background:'+v(m[2])+'" title="'+m[0]+' '+m[1]+'%"></span>';}).join("");
+  key.innerHTML = mix.map(function(m){return '<span><i style="background:'+v(m[2])+'"></i>'+m[0]+' '+m[1]+'%</span>';}).join("");
+}
+
+/* ---------- corrections + contact ---------- */
+function setupForm(){
+  var f=document.getElementById("fixForm"), msg=document.getElementById("fixMsg");
+  f.addEventListener("submit", function(e){
+    e.preventDefault();
+    var text=document.getElementById("fix-text").value.trim();
+    if (text.length<8){ msg.className="formmsg"; msg.textContent="Tell me what's wrong in a sentence or two, then send."; return; }
+    var body={section:document.getElementById("fix-section").value,text:text,who:document.getElementById("fix-who").value.trim(),page:location.href,ts:new Date().toISOString(),hp:document.getElementById("fix-hp").value};
+    if (!CFG.fixApi){ msg.className="formmsg"; msg.textContent="This preview can't send messages. Copy your note and email it to edo.ross03@gmail.com."; return; }
+    msg.className="formmsg"; msg.textContent="Sending…";
+    fetch(CFG.fixApi,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
+      .then(function(r){ if(!r.ok) throw new Error(r.status); msg.className="formmsg ok"; msg.textContent="Received. If it holds up, it goes in the log with your name."; f.reset(); })
+      .catch(function(){ msg.className="formmsg"; msg.textContent="It didn't go through. Email it to edo.ross03@gmail.com instead."; });
+  });
+  var cb=document.getElementById("copyEmail");
+  cb.addEventListener("click", function(){
+    var t=document.getElementById("emailText").textContent;
+    function sel(){ var r=document.createRange(); r.selectNodeContents(document.getElementById("emailText")); var s=getSelection(); s.removeAllRanges(); s.addRange(r); }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(function(){ cb.textContent="Copied"; setTimeout(function(){cb.textContent="Copy";},1600); }, sel);
+    } else sel();
+  });
+}
+function loadLog(){
+  fetch("corrections.json",{cache:"no-store"}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(list){
+    if (!Array.isArray(list) || !list.length) return;
+    var box=document.getElementById("fixLog");
+    box.innerHTML="<b style='color:var(--fg)'>Challenge log · "+list.length+"</b>";
+    list.slice().reverse().forEach(function(c){
+      var p=document.createElement("div"); p.style.marginTop="8px";
+      p.textContent=c.date+" · "+c.section+" · "+c.summary+(c.who?" (thanks, "+c.who+")":"");
+      box.appendChild(p);
+    });
+  }).catch(function(){});
+}
+
+/* ---------- summary / full story ---------- */
+var story=document.getElementById("story"), root=document.documentElement;
+function inStory(t){ return !!(story && t && story.contains(t)); }
+function setView(v){
+  if ((root.getAttribute("data-view")||"summary")===v) return;
+  root.setAttribute("data-view", v);
+  if (v==="full"){ drawUnit(); drawCap(); drawLP(); drawLedger(LEDGER); drawReading(); }
+}
+function viewFor(id){
+  var t=id && document.getElementById(id); if(!t) return null;
+  if (inStory(t)) return "full";
+  if (id==="top") return null;
+  return "summary";
+}
+document.addEventListener("click", function(e){
+  var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+  var v=viewFor(a.getAttribute("href").slice(1)); if(v) setView(v);
+});
+function fromHash(){
+  var id=location.hash.slice(1), v=id?viewFor(id):"summary"; if(!v) return;
+  var was=root.getAttribute("data-view")||"summary"; setView(v);
+  if (id && was!==v){ var t=document.getElementById(id); if(t) requestAnimationFrame(function(){ t.scrollIntoView(); }); }
+}
+window.addEventListener("hashchange", fromHash);
+fromHash();
+
+/* ---------- receipt tooltips: hover on desktop, tap on touch ---------- */
+(function(){
+  var defs={"ref letter":"Recommendation letter from my Finance Manager at Kolme. Available on request.",
+    "mgmt deck":"The handover deck I presented at Kolme, July 2026. Internal document.",
+    "model":"The spreadsheet model itself. Anonymised copy on request.",
+    "thesis":"My bachelor thesis, October 2025. Available on request.",
+    "cv":"Figure from my CV, tracked in the original working files.",
+    "calc":"My arithmetic: 380–780 hours × €13.10 an hour (€2,200 gross a month ÷ 168 contract hours). Salary only, before employer contributions, so it is a floor.",
+    "live":"Live: check it yourself, right now."};
+  var tip=document.createElement("div"); tip.className="tip"; tip.id="rcTip"; tip.setAttribute("role","tooltip"); tip.hidden=true; document.body.appendChild(tip);
+  var cur=null;
+  Array.prototype.forEach.call(document.querySelectorAll(".rc"), function(r){
+    var t=r.getAttribute("title"); if(t) r.removeAttribute("title");
+    var text=t || defs[r.textContent.trim().toLowerCase()]; if(!text) return;
+    r.setAttribute("data-tip", text); r.tabIndex=0; r.setAttribute("role","button");
+    r.setAttribute("aria-describedby","rcTip");
+  });
+  function show(r){
+    if(cur && cur!==r) cur.classList.remove("on");
+    cur=r; r.classList.add("on"); tip.textContent=r.getAttribute("data-tip"); tip.hidden=false;
+    var b=r.getBoundingClientRect(), w=tip.offsetWidth, h=tip.offsetHeight;
+    var x=Math.min(Math.max(12, b.left+b.width/2-w/2), window.innerWidth-w-12);
+    var y=b.top-h-8; if(y<64) y=b.bottom+8;
+    tip.style.left=x+"px"; tip.style.top=y+"px";
+  }
+  function hide(){ if(cur) cur.classList.remove("on"); cur=null; tip.hidden=true; }
+  function rcOf(e){ return e.target.closest && e.target.closest(".rc[data-tip]"); }
+  var lastPtr="", kb=false;
+  document.addEventListener("pointerdown", function(e){ lastPtr=e.pointerType; kb=false; }, true);
+  document.addEventListener("click", function(e){ var r=rcOf(e); if(r){ e.preventDefault(); if(cur===r && lastPtr!=="mouse") hide(); else show(r); } else hide(); });
+  document.addEventListener("pointerover", function(e){ if(e.pointerType!=="mouse") return; var r=rcOf(e); if(r) show(r); });
+  document.addEventListener("pointerout", function(e){ if(e.pointerType!=="mouse") return; if(rcOf(e)) hide(); });
+  document.addEventListener("focusin", function(e){ var r=rcOf(e); if(r && kb) show(r); });
+  document.addEventListener("focusout", function(e){ if(rcOf(e)) hide(); });
+  document.addEventListener("keydown", function(e){ kb=true; if(e.key==="Escape") hide(); var r=rcOf(e); if(r && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); show(r); } });
+  window.addEventListener("scroll", hide, {passive:true});
+})();
+
+drawHero(true); drawUnit(); drawCap(); drawLP(); drawLedger(LEDGER); drawReading(); setupForm(); loadLog();
+/* ---------- IELTS certificate popup: link click, /#ielts, or /ielts (redirects to /#ielts) ---------- */
+(function(){
+  var dlg=document.getElementById("ieltsDlg"), trig=document.getElementById("ielts");
+  if (!dlg || !trig || typeof dlg.showModal!=="function") return;   // no <dialog> support: the link just scrolls
+  function open(){
+    var img=dlg.querySelector("img[data-src]"); if (img){ img.src=img.getAttribute("data-src"); img.removeAttribute("data-src"); }
+    if (!dlg.open) dlg.showModal();
+  }
+  function close(){ if (dlg.open) dlg.close(); }
+  trig.addEventListener("click", function(e){ e.preventDefault(); open(); });
+  dlg.addEventListener("click", function(e){ if (e.target===dlg || (e.target.closest && e.target.closest("[data-close]"))) close(); });
+  dlg.addEventListener("close", function(){
+    if (location.hash==="#ielts") history.replaceState(null, "", location.pathname+location.search);
+    trig.focus({preventScroll:true});
+  });
+  function check(){ if (location.hash==="#ielts") open(); }
+  window.addEventListener("hashchange", check);
+  check();
+})();
+
+var rt; window.addEventListener("resize", function(){ clearTimeout(rt); rt=setTimeout(function(){drawHero(false); drawUnit(); drawCap(); drawLP(); drawLedger(LEDGER);},150); });
+fetch("ledger.json",{cache:"no-store"}).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+  .then(function(d){ if (d && d.days && d.days.length){ LEDGER=d; drawLedger(d); drawHero(false); } }).catch(function(){});
+})();
+</script>
