@@ -52,5 +52,6 @@ n8n workflows, Caddy config and DNS are not managed here (the Caddy block in `do
 No `.bak` copies: use git on your PC (`git init` once).
 The old source zip in `/opt/rossettilab/sites/personal-site/` is superseded by this folder (kept, untouched).
 
-Windows: run the scripts from Git Bash or WSL (they need `rsync` and `ssh`).
+Windows: run the scripts from Git Bash or WSL (they need `rsync` and `ssh`). Without rsync, `upload.ps1` does the same
+job with the tools Windows ships: `powershell -ExecutionPolicy Bypass -File .\upload.ps1` (add `apply` to deploy).
 The server address comes from `.deploy.env`, which is not in git (see `.deploy.env.example`).
