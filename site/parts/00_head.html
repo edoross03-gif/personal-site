@@ -364,5 +364,25 @@ html[data-view="full"] #summary{display:none}
 .certdlg .meta{margin:12px 0 0;font:400 12.5px/1.55 var(--f-mono);color:var(--fg-2)}
 .certdlg .btns{margin-top:14px}
 @media (max-width:460px){ .certdlg .bands{grid-template-columns:repeat(3,minmax(0,1fr))} }
+/* GMAT popup: context note, section rows with range bars (mean tick + your score), report screenshot, logo strip */
+.certdlg .ctx{margin:0 0 14px;padding:10px 14px;border-left:2px solid var(--accent);background:rgba(12,29,61,.6);font-size:14.5px;line-height:1.55;color:#cbd8ea}
+.certdlg .gmrows{display:grid;gap:8px;margin:0 0 16px}
+.certdlg .gmrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:10px 14px 6px;border:1px solid var(--line-2);border-radius:5px}
+.certdlg .gmrow.tot{border-color:var(--accent);background:var(--accent-soft)}
+.certdlg .gmlab b{display:block;font:600 14.5px/1.3 var(--f-body)}
+.certdlg .gmlab span{font:500 10.5px/1.5 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg-2)}
+.certdlg .gmval{align-self:center;font:600 24px/1 var(--f-mono)}
+.certdlg .gmbar{grid-column:1/-1;position:relative;height:36px;margin-top:6px}
+.certdlg .gmbar::before,.certdlg .gmbar .fill{content:"";position:absolute;left:0;right:0;top:10px;height:2px;border-radius:1px;background:var(--line-2)}
+.certdlg .gmbar .fill{right:auto;width:var(--s);background:var(--accent);opacity:.55}
+.certdlg .gmbar .mean{position:absolute;left:var(--m);top:3px;width:2px;height:16px;margin-left:-1px;background:var(--fg-2)}
+.certdlg .gmbar .you{position:absolute;left:var(--s);top:1px;width:10px;height:20px;margin-left:-5px;border-radius:2px;background:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,.18)}
+.certdlg .gmbar span{position:absolute;top:24px;font:500 10.5px/1.2 var(--f-mono);color:var(--fg-3)}
+.certdlg .gmbar .lo{left:0}.certdlg .gmbar .hi{right:0}
+.certdlg .gmbar .ml{left:var(--m);transform:translateX(-50%);color:var(--fg-2);white-space:nowrap}
+.certdlg .shot{display:block;width:100%;height:auto;aspect-ratio:2000/900;border-radius:4px;background:#fff}
+.certdlg .logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 30px;margin-top:12px;padding:14px 16px;border-radius:4px;background:#fff}
+.certdlg .logos img{height:30px;width:auto}
+@media (max-width:460px){ .certdlg .logos img{height:24px} .certdlg .logos{gap:10px 20px} }
 </style>
 <!--/HEAD-->

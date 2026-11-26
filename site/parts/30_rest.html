@@ -115,6 +115,8 @@
         <div class="item">
           <h4>Languages</h4>
           <p>Italian, native · English, C1 <a class="certlink" id="ielts" href="#ielts" aria-haspopup="dialog" data-umami-event="ielts-open">IELTS Academic 7.0 <span class="rc">View</span></a> · Spanish, B1+</p>
+          <h4 style="margin-top:14px">Admissions test</h4>
+          <p><a class="certlink" id="gmat" href="#gmat" aria-haspopup="dialog" data-umami-event="gmat-open">GMAT Focus 595 <span class="rc">View</span></a> · 66th percentile, Dec 2025. Prepared while working full time at AB Vision, job hunting and writing my bachelor thesis.</p>
           <h4 style="margin-top:14px">Certifications</h4>
           <p>Bloomberg Market Concepts, 2025 · HarvardX Data Science: R Basics, 2026</p>
           <h4 style="margin-top:14px">Stack</h4>
@@ -208,7 +210,7 @@
 <footer class="site">
   <div class="wrap">
     <span>Built and hosted by me on RossettiLab. No cookies. <a href="https://github.com/edoross03-gif/personal-site" target="_blank" rel="noopener">Source on GitHub ↗</a></span>
-    <span>v1.3.4 · 14 Nov 2026</span>
+    <span>v1.3.5 · 26 Nov 2026</span>
   </div>
 </footer>
 
@@ -230,6 +232,45 @@
     <p class="meta">IELTS Online · test date 11 Nov 2025 · issued 16 Nov 2025 · TRF no. 2520015061ROSE1IHA<br>Passport number and date of birth hidden. Organisations can verify the result at <a href="https://ielts.org/verify" target="_blank" rel="noopener">ielts.org/verify</a> with the TRF number.</p>
     <div class="btns">
       <a class="btn primary" href="/ielts/IELTS_Academic_TRF_Edoardo_Rossetti.pdf" target="_blank" rel="noopener" data-umami-event="ielts-pdf">Open PDF ↗</a>
+      <button class="btn" type="button" data-close>Close</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="certdlg" id="gmatDlg" aria-labelledby="gmatTitle">
+  <div class="hd">
+    <h3 id="gmatTitle">GMAT Focus Edition · Score report</h3>
+    <button class="x" type="button" data-close aria-label="Close">×</button>
+  </div>
+  <div class="bd">
+    <p class="ctx">Taken in December 2025. I prepared for it while working full time on AB Vision's finance, job hunting and writing my bachelor thesis.</p>
+    <div class="gmrows" role="list" aria-label="Scores by section">
+      <div class="gmrow tot" role="listitem">
+        <div class="gmlab"><b>Total score</b><span>66th percentile</span></div><div class="gmval">595</div>
+        <div class="gmbar" style="--s:65%;--m:58.33%" aria-hidden="true"><i class="fill"></i><i class="mean"></i><i class="you"></i><span class="lo">205</span><span class="ml">Mean 555</span><span class="hi">805</span></div>
+      </div>
+      <div class="gmrow" role="listitem">
+        <div class="gmlab"><b>Quantitative Reasoning</b><span>57th percentile</span></div><div class="gmval">79</div>
+        <div class="gmbar" style="--s:63.33%;--m:60%" aria-hidden="true"><i class="fill"></i><i class="mean"></i><i class="you"></i><span class="lo">60</span><span class="ml">Mean 78</span><span class="hi">90</span></div>
+      </div>
+      <div class="gmrow" role="listitem">
+        <div class="gmlab"><b>Verbal Reasoning</b><span>73rd percentile</span></div><div class="gmval">82</div>
+        <div class="gmbar" style="--s:73.33%;--m:63.33%" aria-hidden="true"><i class="fill"></i><i class="mean"></i><i class="you"></i><span class="lo">60</span><span class="ml">Mean 79</span><span class="hi">90</span></div>
+      </div>
+      <div class="gmrow" role="listitem">
+        <div class="gmlab"><b>Data Insights</b><span>61st percentile</span></div><div class="gmval">77</div>
+        <div class="gmbar" style="--s:56.67%;--m:50%" aria-hidden="true"><i class="fill"></i><i class="mean"></i><i class="you"></i><span class="lo">60</span><span class="ml">Mean 75</span><span class="hi">90</span></div>
+      </div>
+    </div>
+    <p class="meta" style="margin:0 0 8px">From my official score report on mba.com:</p>
+    <img class="shot" data-src="/gmat/gmat-scores.webp" alt="GMAT Focus Edition score report, Performance by Section: total score 595 (66th percentile, mean 555), Quantitative Reasoning 79 (57th, mean 78), Verbal Reasoning 82 (73rd, mean 79), Data Insights 77 (61st, mean 75)" width="2000" height="900">
+    <div class="logos">
+      <img data-src="/gmat/logo-gmat-focus.webp" alt="GMAT Focus Edition" width="253" height="120">
+      <img data-src="/gmat/logo-gmac.webp" alt="GMAC" width="450" height="120">
+      <img data-src="/gmat/logo-mba-com.webp" alt="mba.com" width="474" height="120">
+    </div>
+    <p class="meta">GMAT Focus Edition · total scale 205–805, sections 60–90 · means and percentiles as shown on the report.<br>Schools receive official scores directly from GMAC. The full score report is available on request.</p>
+    <div class="btns">
       <button class="btn" type="button" data-close>Close</button>
     </div>
   </div>

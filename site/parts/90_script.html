@@ -308,22 +308,28 @@ fromHash();
 })();
 
 drawHero(true); drawUnit(); drawCap(); drawLP(); drawLedger(LEDGER); drawReading(); setupForm(); loadLog();
-/* ---------- IELTS certificate popup: link click, /#ielts, or /ielts (redirects to /#ielts) ---------- */
+/* ---------- certificate popups (IELTS, GMAT): link click, /#name, or /name (redirects to /#name) ----------
+   Each one is a link id="name" plus a <dialog id="nameDlg">; images inside load on first open (data-src). */
 (function(){
-  var dlg=document.getElementById("ieltsDlg"), trig=document.getElementById("ielts");
-  if (!dlg || !trig || typeof dlg.showModal!=="function") return;   // no <dialog> support: the link just scrolls
-  function open(){
-    var img=dlg.querySelector("img[data-src]"); if (img){ img.src=img.getAttribute("data-src"); img.removeAttribute("data-src"); }
-    if (!dlg.open) dlg.showModal();
+  var wired=[];
+  function wire(name){
+    var dlg=document.getElementById(name+"Dlg"), trig=document.getElementById(name), hash="#"+name;
+    if (!dlg || !trig || typeof dlg.showModal!=="function") return;   // no <dialog> support: the link just scrolls
+    function open(){
+      Array.prototype.forEach.call(dlg.querySelectorAll("img[data-src]"), function(img){ img.src=img.getAttribute("data-src"); img.removeAttribute("data-src"); });
+      if (!dlg.open) dlg.showModal();
+    }
+    function close(){ if (dlg.open) dlg.close(); }
+    trig.addEventListener("click", function(e){ e.preventDefault(); open(); });
+    dlg.addEventListener("click", function(e){ if (e.target===dlg || (e.target.closest && e.target.closest("[data-close]"))) close(); });
+    dlg.addEventListener("close", function(){
+      if (location.hash===hash) history.replaceState(null, "", location.pathname+location.search);
+      trig.focus({preventScroll:true});
+    });
+    wired.push({hash:hash, open:open});
   }
-  function close(){ if (dlg.open) dlg.close(); }
-  trig.addEventListener("click", function(e){ e.preventDefault(); open(); });
-  dlg.addEventListener("click", function(e){ if (e.target===dlg || (e.target.closest && e.target.closest("[data-close]"))) close(); });
-  dlg.addEventListener("close", function(){
-    if (location.hash==="#ielts") history.replaceState(null, "", location.pathname+location.search);
-    trig.focus({preventScroll:true});
-  });
-  function check(){ if (location.hash==="#ielts") open(); }
+  ["ielts","gmat"].forEach(wire);
+  function check(){ wired.forEach(function(w){ if (location.hash===w.hash) w.open(); }); }
   window.addEventListener("hashchange", check);
   check();
 })();
